@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Shop</title>
+</head>
+<body>
+    <h1>Products</h1>
+    <ul>
+        {% for product in products %}
+            <li>
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" width="100">
+                <h2>{{ product.name }}</h2>
+                <p>{{ product.description }}</p>
+                <p>${{ product.price }}</p>
+                {% if user.is_authenticated %}
+                    <a href="{% url 'add_to_wishlist' product.id %}">Add to Wishlist</a>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
