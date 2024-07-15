@@ -1,6 +1,27 @@
-import React from "react";
+import React, { useState } from 'react';
+import apiService from '../apiService';
 
 export const LoginPage = () => {
+  const [formData, setFormData] = useState({ username: '', password: '' });
+  const [error, setError] = useState(null);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    apiService.login(formData)
+      .then(data => {
+        localStorage.setItem('token', data.token);  // Store the token
+        console.log('Login successful:', data);
+      })
+      .catch(error => {
+        setError('There was an error logging in!');
+        console.error('Login error:', error);
+      });
+  };
+
   return (
     <div>
       <nav className="w-full shadow-md h-25 bg-orange-100 sticky top-0 z-50">
@@ -16,7 +37,7 @@ export const LoginPage = () => {
             <p className="text-center text-gray-600 mb-6">
               Log in to keep exploring sustainable, AI-powered fashion insights.
             </p>
-            <form className="space-y-6">
+            <form className="space-y-6" onSubmit={handleSubmit}>
               <div>
                 <label
                   htmlFor="email"
@@ -25,10 +46,13 @@ export const LoginPage = () => {
                   E-mail
                 </label>
                 <input
-                  type="email"
-                  id="email"
+                  type="text"
+                  id="username"
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
                   placeholder="Email address"
+                  name='username'
+                  value={formData.username}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -44,6 +68,9 @@ export const LoginPage = () => {
                   id="password"
                   className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring focus:border-blue-300"
                   placeholder="Password"
+                  name="password"
+                  value={formData.password}
+                  onChange={handleChange}
                   required
                 />
               </div>

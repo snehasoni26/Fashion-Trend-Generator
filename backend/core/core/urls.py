@@ -18,15 +18,12 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth import views as auth_views
 from fashion import views
 urlpatterns = [
     # path('', include('fashion.urls')),
     path('api/',include('api.urls')),
     path('admin/', admin.site.urls),
     # path('signup/', views.signup, name='signup'),
-    # path('login/', auth_views.LoginView.as_view(), name='login'),
-    # path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     # path('wishlist/', views.view_wishlist, name='view_wishlist')
 ]
 if settings.DEBUG:

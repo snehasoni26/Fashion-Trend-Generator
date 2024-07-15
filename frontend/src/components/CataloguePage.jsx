@@ -34,7 +34,7 @@ const CatalogPage = () => {
               />
               <div className="absolute top-4 right-4 bg-white p-2 rounded-full shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <button className="text-red-500">
-                <FontAwesomeIcon icon="fa-solid fa-bookmark" />
+                <FontAwesomeIcon icon="heart" />
                 </button>
               </div>
               <div className="p-4">
@@ -43,7 +43,7 @@ const CatalogPage = () => {
                 <div className="flex items-center justify-between mt-4">
                   <div className="text-gray-600">
                     <span className="mr-2">
-                    <FontAwesomeIcon icon="fa-solid fa-bookmark" /> {item.likes}
+                    <FontAwesomeIcon icon="heart" />{item.likes}
                     </span>
                     <span>
                     <FontAwesomeIcon icon="fa-solid fa-bookmark" />{item.views}
