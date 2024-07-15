@@ -4,6 +4,12 @@
     <title>Shop</title>
 </head>
 <body>
+    <nav>
+        <form action="{% url 'logout' %}" method="post">
+            {% csrf_token %}
+            <button type="submit">Logout</button>
+        </form>
+        </nav>
     <h1>Products</h1>
     <ul>
         {% for product in products %}
