@@ -17,7 +17,7 @@
                 <img src="{{ product.image.url }}" alt="{{ product.name }}" width="100">
                 <h2>{{ product.name }}</h2>
                 <p>{{ product.description }}</p>
-                <p>${{ product.price }}</p>
+                <p>{{ product.category }}</p>
                 {% if user.is_authenticated %}
                     <a href="{% url 'add_to_wishlist' product.id %}">Add to Wishlist</a>
                 {% endif %}
