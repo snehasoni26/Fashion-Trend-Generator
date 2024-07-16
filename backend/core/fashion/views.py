@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from .models import Product, Wishlist
-from .serializers import ProductSerializer, WishlistSerializer
+from .serializers import ProductSerializer, WishlistSerializer,SignUpSerializer
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 from rest_framework.decorators import api_view, permission_classes
@@ -84,24 +84,41 @@ class WishlistDetailAPIView(APIView):
         wishlist = get_object_or_404(Wishlist, pk=pk, user=request.user)
         wishlist.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
+class AddToWishlistView(APIView):
+    def post(self, request, product_id, *args, **kwargs):
+        product = get_object_or_404(Product, id=product_id)
+        user = request.user
+        wishlist, created = Wishlist.objects.get_or_create(user=user)
+        if product in wishlist.products.all():
+            return Response({"message": "Product is already in wishlist"}, status=status.HTTP_200_OK)
+        wishlist.products.add(product)
+        return Response({"message": "Product added to wishlist"}, status=status.HTTP_200_OK)
+# @api_view(['POST'])
+# def signup(request):
+#     if request.method == 'POST':
+#         serializer = SignUpForm(data=request.data)
+#         if serializer.is_valid():
+#             user = serializer.save()
+#             token, created = Token.objects.get_or_create(user=user)
+#             return Response({
+#                 'token': token.key,
+#                 'user_id': user.pk,
+#                 'email': user.email
+#             }, status=status.HTTP_201_CREATED)
+#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#singup view
 @csrf_exempt
 @api_view(['POST'])
 @permission_classes([AllowAny])
-def signup(request):
-    print("request is", request, request.method)
-    if request.method == 'POST':
-        print(request)
-        serializer = SignUpForm(data=request.data)
+class SignUpView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = SignUpSerializer(data=request.data)
         if serializer.is_valid():
-            user = serializer.save()
-            token, created = Token.objects.get_or_create(user=user)
-            return Response({
-                'token': token.key,
-                'user_id': user.pk,
-                'email': user.email
-            }, status=status.HTTP_201_CREATED)
+            serializer.save()
+            return Response({"message": "User created successfully"}, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+#login view 
+# 
 
 import requests
 from django.http import JsonResponse
